@@ -7,7 +7,7 @@
   <name>API Trading Service</name>
   <description>Let's users create algorithm based strategies to trade against arbitrary exchanges</description>
   <modules>
-  	<module>exchange-abstraction</module>
+  	<module>exchange</module>
   </modules>
   <properties>
 		<maven.compiler.target>21</maven.compiler.target>
