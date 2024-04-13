@@ -32,14 +32,15 @@ Container_Boundary(apitradingsystem, "API-Trading-System") {
         Container(ea, "Exhange Abstaraction", "Java, maven", "Provides all the online broker functionality")
         Container(ldd, "Live Data Distributor", "Java, maven, ReactiveX", "Distributes Live Data from the Exchange wehrever they are needed")
         Container(strat, "Strategy", "Java, maven, ReactiveX", "Enables a user to implement trading strategies")
-
     }
 
 }
 
 Rel(ich, strat, "develops trading stategies")
-Rel(strat, restapi, "executes trades")
-Rel(liveapi, ea, "provides live data")
+Rel(strat, ea, "executes trades")
+Rel(ldd, liveapi, "subscribes to")
+Rel(strat, ldd, "subscribes to")
+BiRel(ea, ldd, "communicates with")
 ```
 
 ```mermaid
@@ -52,6 +53,5 @@ Container_Boundary(ea, "ExchangeAbstraction"){
     Component(ts, "trading Service")
     Component(eacc, "Exchange Account")
 }
-
 
 ```
