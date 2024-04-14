@@ -27,47 +27,40 @@ public class Api {
 	@GET
 	@Path("{s:.*}")
 	@Produces("application/json")
-	public String health() { 
-		return "{\"status\": \"healthy\"}";
-	}
-	
-	@GET
-	@Path("get-echo")
-	@Produces("application/json")
 	public String echoGet() {
 		return Controller.echoNoBody(request, httpHeaders, uriInfo);
 	}
 	
 	@POST
-	@Path("post-echo")
+	@Path("{s:.*}")
 	@Produces("application/json")
 	public String echoPost(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
 	@PUT
-	@Path("put-echo")
+	@Path("{s:.*}")
 	@Produces("application/json")
 	public String echoPut(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
 	@PATCH
-	@Path("patch-echo")
+	@Path("{s:.*}")
 	@Produces("application/json")
 	public String echoPatch(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
 	@DELETE
-	@Path("delete-echo")
+	@Path("{s:.*}")
 	@Produces("application/json")
 	public String echoDeleteBody(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
 	@DELETE
-	@Path("delete-echo")
+	@Path("{s:.*}")
 	@Produces("application/json")
 	public String echoDelete() {
 		return Controller.echoNoBody(request, httpHeaders, uriInfo);
