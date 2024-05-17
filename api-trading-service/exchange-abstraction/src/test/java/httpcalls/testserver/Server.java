@@ -17,7 +17,7 @@ public class Server {
 		String baseUri = "http://localhost:" + port + "/";
 		ResourceConfig resourceConfig = new ResourceConfig(Api.class);
 		
-		server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), resourceConfig);
+		server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), resourceConfig);		
 	}
 	
 	public static void stopServer() {

@@ -24,6 +24,14 @@ public class Api {
 	@Context
 	private Request request;
 	
+	/**
+	 * This Endpoint echos a GET Reguest in terms of<br>
+	 * * URL<br>
+	 * * Path<br>
+	 * * Method<br>
+	 * * Headers
+	 * @return the above request details, formatted as a json string
+	 */
 	@GET
 	@Path("{s:.*}")
 	@Produces("application/json")
@@ -31,6 +39,16 @@ public class Api {
 		return Controller.echoNoBody(request, httpHeaders, uriInfo);
 	}
 	
+	/**
+	 * This Endpoint echos a POST Reguest in terms of<br>
+	 * * URL<br>
+	 * * Path<br>
+	 * * Method<br>
+	 * * Headers<br>
+	 * * Body
+	 * @param body The request body
+	 * @return
+	 */
 	@POST
 	@Path("{s:.*}")
 	@Produces("application/json")
@@ -38,6 +56,17 @@ public class Api {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
+	
+	/**
+	 * This Endpoint echos a PUT Reguest in terms of<br>
+	 * * URL<br>
+	 * * Path<br>
+	 * * Method<br>
+	 * * Headers<br>
+	 * * Body
+	 * @param body The request body
+	 * @return
+	 */
 	@PUT
 	@Path("{s:.*}")
 	@Produces("application/json")
@@ -45,6 +74,16 @@ public class Api {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
+	/**
+	 * This Endpoint echos a PATCH Reguest in terms of<br>
+	 * * URL<br>
+	 * * Path<br>
+	 * * Method<br>
+	 * * Headers<br>
+	 * * Body
+	 * @param body The request body
+	 * @return
+	 */
 	@PATCH
 	@Path("{s:.*}")
 	@Produces("application/json")
@@ -52,6 +91,16 @@ public class Api {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
+	/**
+	 * This Endpoint echos a DELETE Reguest with a payload in terms of<br>
+	 * * URL<br>
+	 * * Path<br>
+	 * * Method<br>
+	 * * Headers<br>
+	 * * Body
+	 * @param body The request body
+	 * @return
+	 */	
 	@DELETE
 	@Path("{s:.*}")
 	@Produces("application/json")
@@ -59,6 +108,14 @@ public class Api {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
+	/**
+	 * This Endpoint echos a DELETE Reguest in terms of<br>
+	 * * URL<br>
+	 * * Path<br>
+	 * * Method<br>
+	 * * Headers<br>
+	 * @return
+	 */
 	@DELETE
 	@Path("{s:.*}")
 	@Produces("application/json")

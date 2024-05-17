@@ -91,8 +91,6 @@ public class Http {
 		}
 		return requestBuilder;
 	}
-	
-	
 
 	private String buildUrl(String url, Map<String, String> params) {
 		if(params == null || params.isEmpty()) {
@@ -123,7 +121,6 @@ public class Http {
 		return requestBuilder;
 	}
 	
-
 	private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
 		try (HttpClient client = HttpClient.newBuilder()
 				.connectTimeout(Duration.ofSeconds(5))
