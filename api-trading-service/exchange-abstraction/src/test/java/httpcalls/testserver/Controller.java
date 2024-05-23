@@ -34,6 +34,7 @@ public class Controller {
 		response.add("params", getParams(uriInfo.getRequestUri()));
 		response.addProperty("method", request.getMethod());
 		response.add("headers", new Gson().toJsonTree(httpHeaders.getRequestHeaders()));
+		response.addProperty("client-host", uriInfo.getRequestUri().getHost());
 		
 		if(body != null) {
 			try {
@@ -50,12 +51,15 @@ public class Controller {
 		try {
 			url = requestUri.toURL();
 			String query = url.getQuery();
+			if (query == null) {
+				return null;
+			}
 			Map<String, String> queryParams = new HashMap<>();
 			String[] keyValuePairs = query.split("&");
 			
 			for(String pair : keyValuePairs) {
 				String[] pairArray = pair.split("=");
-				queryParams.put(pairArray[0], pairArray[1]);
+				queryParams.put(pairArray[0], pairArray.length > 1 ? pairArray[1] : "");
 			}	
 			return new Gson().toJsonTree(queryParams);
 		} catch (MalformedURLException e) {

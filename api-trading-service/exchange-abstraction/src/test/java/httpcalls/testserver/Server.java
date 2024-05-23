@@ -7,13 +7,14 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class Server {
+	private static final int port = 8080;
+	
 	static HttpServer server; 
 	public static void main (String... args) {
 		startServer();
 	}
 	
 	public static void startServer() {
-		int port = 8080;
 		String baseUri = "http://localhost:" + port + "/";
 		ResourceConfig resourceConfig = new ResourceConfig(Api.class);
 		

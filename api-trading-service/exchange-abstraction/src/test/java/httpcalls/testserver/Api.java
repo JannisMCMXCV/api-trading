@@ -56,7 +56,6 @@ public class Api {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
-	
 	/**
 	 * This Endpoint echos a PUT Reguest in terms of<br>
 	 * * URL<br>
