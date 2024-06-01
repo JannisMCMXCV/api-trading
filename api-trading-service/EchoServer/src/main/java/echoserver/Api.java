@@ -1,4 +1,4 @@
-package httpcalls.testserver;
+package echoserver;
 
 import java.io.IOException;
 import java.io.InputStream;

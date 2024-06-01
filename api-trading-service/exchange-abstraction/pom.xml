@@ -11,11 +11,6 @@
 	<name>Exchange Abstraction</name>
 	<description>Provides Methods to trade againt arbitrary Exchanges</description>
 
-	<properties>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.source>17</maven.compiler.source>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>io.reactivex.rxjava3</groupId>
@@ -36,10 +31,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.10.2</version>
-			<scope>test</scope>
+			<groupId>de.mcmxcv</groupId>
+			<artifactId>EchoServer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -47,41 +41,13 @@
 			<artifactId>MapUtils</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
-		<!-- Testserver -->
-		<dependency>
-			<groupId>jakarta.ws.rs</groupId>
-			<artifactId>jakarta.ws.rs-api</artifactId>
-			<version>4.0.0</version>
-		</dependency>
 
 		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-http</artifactId>
-			<version>4.0.0-M1</version>
-			<scope>test</scope>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
+		    <version>5.10.2</version>
+		    <scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.grizzly</groupId>
-			<artifactId>grizzly-http-server</artifactId>
-			<version>4.0.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.jersey.inject</groupId>
-			<artifactId>jersey-hk2</artifactId>
-			<version>4.0.0-M1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>2.17.1</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- Testserver -->
 	</dependencies>
 
 </project>

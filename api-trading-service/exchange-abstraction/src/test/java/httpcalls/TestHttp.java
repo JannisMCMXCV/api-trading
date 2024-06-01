@@ -1,7 +1,7 @@
 package httpcalls;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
-import httpcalls.testserver.Server;
+import echoserver.Server;
 import util.MapUtils;
 
 public class TestHttp {
@@ -161,5 +161,4 @@ public class TestHttp {
 		return Arrays.asList(str);
 		
 	}
-	
 }

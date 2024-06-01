@@ -1,4 +1,4 @@
-package httpcalls.testserver;
+package echoserver;
 
 import java.net.URI;
 
