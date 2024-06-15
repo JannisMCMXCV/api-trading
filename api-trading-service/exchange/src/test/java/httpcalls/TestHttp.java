@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
@@ -85,7 +87,12 @@ public class TestHttp {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void post() throws IOException, InterruptedException {
+		System.out.println("TIME:"); 
+		long start = System.currentTimeMillis();
 		HttpResponse<String> response = http.post(baseUrl, testParams, testHeaders, testBody);
+		long stop = System.currentTimeMillis();
+		long time = (stop-start);
+		System.out.println("TIME: " + time);
 		System.out.println(response);
 		Map<String, List<String>> responseMap = responseToMap(response);
 		
@@ -129,9 +136,7 @@ public class TestHttp {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void delete() throws IOException, InterruptedException {
-		System.out.println("hier gehts zum Delete Test...");
 		HttpResponse<String> response = http.delete(baseUrl + testPath, testParams, testHeaders);
-		System.out.println("wir sind durch...");
 		
 		Map<String, List<String>> responseMap = responseToMap(response);
 	

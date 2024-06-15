@@ -25,5 +25,7 @@
 	</properties>
 	<modules>
 		<module>EchoServer</module>
+		<module>exchange</module>
+		<module>MapUtils</module>	
 	</modules>
 </project>

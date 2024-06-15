@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>exchange</artifactId>
 	<name>Exchange Abstraction</name>
-	<description>Provides Methods to trade againt arbitrary Exchanges</description>
+	<description>Provides Methods to trade against arbitrary Exchanges</description>
 
 	<dependencies>
 		<dependency>

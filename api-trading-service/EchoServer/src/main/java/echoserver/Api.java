@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Request;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
 @Path("/")
@@ -41,8 +42,7 @@ public class Api extends Application {
 	@GET
 	@Path("{s:.*}")
 	@Produces("application/json")
-	public String echoGet() {
-		System.out.println("GETSBY");
+	public Response echoGet() {
 		return Controller.echoNoBody(request, httpHeaders, uriInfo);
 	}
 	
@@ -59,8 +59,7 @@ public class Api extends Application {
 	@POST
 	@Path("{s:.*}")
 	@Produces("application/json")
-	public String echoPost(String body) {
-		System.out.println("POSTSBY");
+	public Response echoPost(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
@@ -68,8 +67,7 @@ public class Api extends Application {
 	@Path("/theOnlyOne")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces("application/json")
-	public String theOnlyOne(String body) {
-		System.out.println("I am the only one!");
+	public Response theOnlyOne(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
@@ -86,8 +84,7 @@ public class Api extends Application {
 	@PUT
 	@Path("{s:.*}")
 	@Produces("application/json")
-	public String echoPut(String body) {
-		System.out.println("PUTSBY");
+	public Response echoPut(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
@@ -104,8 +101,7 @@ public class Api extends Application {
 	@PATCH
 	@Path("{s:.*}")
 	@Produces("application/json")
-	public String echoPatch(String body) {
-		System.out.println("PATCHSBY");
+	public Response echoPatch(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
 	
@@ -122,23 +118,21 @@ public class Api extends Application {
 	@DELETE
 	@Path("{s:.*}")	
 	@Produces("application/json")
-	public String echoDeleteBody(String body) {
-		System.out.println("DELETESBY");
-		
+	public Response echoDeleteBody(String body) {	
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
-	@DELETE
-	@Path("{s:.*}")	
-	@Produces("application/json")
-	public String echoDeleteBody(InputStream bodyStream) {
-		System.out.println("DELETESBY");
-		try {
-			return Controller.echoBody(new String(bodyStream.readAllBytes(), StandardCharsets.UTF_8), request, httpHeaders, uriInfo);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return Controller.echoBody("", request, httpHeaders, uriInfo);
-		}
-	}
+//	@DELETE
+//	@Path("{s:.*}")	
+//	@Produces("application/json")
+//	public Response echoDeleteBody(InputStream bodyStream) {
+//		System.out.println("DELETESBY");
+//		try {
+//			return Controller.echoBody(new String(bodyStream.readAllBytes(), StandardCharsets.UTF_8), request, httpHeaders, uriInfo);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return Controller.echoBody("", request, httpHeaders, uriInfo);
+//		}
+//	}
 	
 	/**
 	 * This Endpoint echos a DELETE Reguest in terms of<br>
@@ -151,8 +145,7 @@ public class Api extends Application {
 	@DELETE
 	@Path("{s:.*}")
 	@Produces("application/json")
-	public String echoDelete() {
-		System.out.println("DELETESBY");
+	public Response echoDelete() {
 		return Controller.echoNoBody(request, httpHeaders, uriInfo);
 	}
 }

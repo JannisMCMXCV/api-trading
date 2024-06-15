@@ -14,19 +14,29 @@ import com.google.gson.JsonSyntaxException;
 
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Request;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
 public class Controller {
 
-	public static String echoBody(String body, Request request, HttpHeaders httpHeaders, UriInfo uriInfo) {
-		return createAnswer(body, request, httpHeaders, uriInfo);
+	public static Response echoBody(String body, Request request, HttpHeaders httpHeaders, UriInfo uriInfo) {
+		String responseBody = createResponseBody(body, request, httpHeaders, uriInfo);
+		return okResponse(responseBody);
 	}
 
-	public static String echoNoBody(Request request, HttpHeaders httpHeaders, UriInfo uriInfo) {
-		return createAnswer(null, request, httpHeaders, uriInfo);
+	public static Response echoNoBody(Request request, HttpHeaders httpHeaders, UriInfo uriInfo) {
+		String responseBody = createResponseBody(null, request, httpHeaders, uriInfo);
+		return okResponse(responseBody);
 	}
 	
-	private static String createAnswer(String body, Request request, HttpHeaders httpHeaders, UriInfo uriInfo) {
+	private static Response okResponse(String responseBody) {
+		return Response.ok()
+				.entity(responseBody)
+				.header("X-Who", "I bims")
+				.build();
+	}
+	
+	private static String createResponseBody(String body, Request request, HttpHeaders httpHeaders, UriInfo uriInfo) {
 		JsonObject response = new JsonObject();
 		Gson gson = new Gson();
 		response.addProperty("url",  uriInfo.getRequestUri().toASCIIString());

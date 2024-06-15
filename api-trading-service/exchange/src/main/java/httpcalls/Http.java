@@ -1,19 +1,19 @@
 package httpcalls;
 
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpRequest.Builder;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -21,7 +21,7 @@ import com.google.gson.JsonSyntaxException;
 import util.MapUtils;
 
 public class Http {
-
+	private static final Logger logger = LoggerFactory.getLogger(Http.class);
 	private HttpClient client;
 
 	public Http() {
@@ -29,7 +29,7 @@ public class Http {
 	}
 
 	private HttpClient createClient() {
-		return HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
+		return HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(30)).build();
 	}
 
 	public HttpResponse<String> get(String url, Map<String, String> params, Map<String, String> headers)
@@ -41,16 +41,14 @@ public class Http {
 
 	public HttpResponse<String> post(String url, Map<String, String> params, Map<String, String> headers, String body)
 			throws IOException, InterruptedException {
-		byte[] bodyBytes = body != null ? body.getBytes(StandardCharsets.UTF_8) : null;
-
-		HttpRequest postRequest = postRequestBuilder(url, params, headers, bodyBytes).build();
-
+		HttpRequest postRequest = postRequestBuilder(url, params, headers, body).build();
 		return send(postRequest);
 	}
 
 	private Builder postRequestBuilder(String url, Map<String, String> params, Map<String, String> headers,
-			byte[] bodyBytes) {
+			String body) {
 
+		byte[] bodyBytes = body != null ? body.getBytes(StandardCharsets.UTF_8) : "".getBytes(StandardCharsets.UTF_8);
 		completeHeaders(headers, bodyBytes);
 		System.out.println(headers);
 
@@ -141,7 +139,9 @@ public class Http {
 
 	private Builder baseRequestBuidlder(String url, Map<String, String> params, Map<String, String> headers) {
 		url = buildUrl(url, params);
-		Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(url)).timeout(Duration.ofSeconds(5));
+		Builder requestBuilder = HttpRequest.newBuilder()
+				.uri(URI.create(url))
+				.timeout(Duration.ofSeconds(30));
 
 		if (headers != null) {
 			headers.forEach(requestBuilder::header);
@@ -163,21 +163,46 @@ public class Http {
 
 	private String buildUrl(String url, Map<String, String> params) {
 		if (params == null || params.isEmpty()) {
-			return url;
-		}
-		StringBuilder urlBuilder = new StringBuilder(url);
+	        return url;
+	    }
+	    StringBuilder urlBuilder = new StringBuilder(url);
 
-		if (!url.endsWith("?")) {
-			urlBuilder.append('?');
-		}
+	    if (!url.contains("?")) {
+	        urlBuilder.append('?');
+	    } else if (!url.endsWith("&") && !url.endsWith("?")) {
+	        urlBuilder.append('&');
+	    }
 
-		params.entrySet().stream().map(entry -> entry.getKey() + "=" + entry.getValue() + "&")
-				.forEach(urlBuilder::append);
+	    params.entrySet().stream()
+	          .map(entry -> entry.getKey() + "=" + entry.getValue() + "&")
+	          .forEach(urlBuilder::append);
+	    removeTrailingSymbol(urlBuilder);
+	    logger.info("Resulting URL: {}", urlBuilder.toString());
+	    return urlBuilder.toString();
+	}
+
+	private void removeTrailingSymbol(StringBuilder urlBuilder) {
 		urlBuilder.deleteCharAt(urlBuilder.length() - 1);
-		return urlBuilder.toString();
 	}
 
 	private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
-		return client.send(request, BodyHandlers.ofString());
+		logger.info("Sending request to: {}", request.uri());
+	    logger.info("Request method: {}", request.method());
+	    
+	    request.headers().map().forEach((k, v) -> logger.info(k + ": " + String.join(", ", v)));
+	    logger.info("Request Headers: " + request.headers().map());
+	    
+	    if (request.bodyPublisher().isPresent()) {
+	    	System.out.println(request.bodyPublisher().get().getClass());
+	    }
+	    try {
+	    	HttpResponse<String> response = client.send(request, BodyHandlers.ofString(StandardCharsets.UTF_8));
+	    	logger.info("Response received with status code: " + response.statusCode());
+	    	return response;
+	    } catch (IOException | InterruptedException e) {
+	    	logger.error("Could not send request. " + e.getMessage());
+	    	e.printStackTrace();
+	    	throw e;
+	    }
 	}
 }
