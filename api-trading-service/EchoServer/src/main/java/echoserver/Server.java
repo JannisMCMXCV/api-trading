@@ -32,18 +32,18 @@ public class Server {
 
 	public static void startServer() {
 		String baseUri = "http://" + NetworkListener.DEFAULT_NETWORK_HOST + ":" + port;
+		
 		ResourceConfig resourceConfig = new ResourceConfig(Api.class);
 		resourceConfig.register(CustomExceptionMapper.class);
 		resourceConfig.register(new RequestLogging(logger));
 		resourceConfig.register(new ResponseLogging(logger));
+		
 		server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), resourceConfig, false);
 		NetworkListener listener = server.getListener("grizzly");
 		Http2Configuration configuration = Http2Configuration.builder().build();
 		Http2AddOn http2Addon = new Http2AddOn(configuration);
 		listener.registerAddOn(http2Addon);
-		listener.getKeepAlive().setIdleTimeoutInSeconds(300);
-		listener.getKeepAlive().setMaxRequestsCount(1000);
-		server.addListener(listener);
+		server.getServerConfiguration().setAllowPayloadForUndefinedHttpMethods(true);
 		System.out.println(listener);
 
 		try {

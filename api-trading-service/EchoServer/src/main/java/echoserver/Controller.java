@@ -73,7 +73,6 @@ public class Controller {
 			}	
 			return new Gson().toJsonTree(queryParams);
 		} catch (MalformedURLException e) {
-			// should not happen :D
 			throw new RuntimeException("Could not convert from URI to URL");
 		}
 		

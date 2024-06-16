@@ -25,22 +25,26 @@ public class RequestLogging implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 		logger.info("Received request: " + requestContext.getMethod() + " " + requestContext.getUriInfo().getRequestUri());
+		logRequestHeaders(requestContext);
         if (requestContext.hasEntity()) {
         	logRequestBody(requestContext);
         }
     }
 
+	private void logRequestHeaders(ContainerRequestContext requestContext) {
+		logger.info("Request Headers: " + requestContext.getHeaders());
+		
+	}
+
 	private void logRequestBody(ContainerRequestContext requestContext) throws IOException {
 		InputStream inputStream = requestContext.getEntityStream();
         try {
-        	System.out.println("trying...");
             String body = ReaderWriter.readFromAsString(inputStream, new MediaType(MediaType.CHARSET_PARAMETER, null, "UTF-8"));
             logger.info("Request Body: " + body);
             
             // Reset the entity stream, so Jersey can process the request as usual
             requestContext.setEntityStream(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
         } catch (IOException e) {
-        	System.out.println("gotcha!");
             logger.log(Level.SEVERE, "Failed to read request body", e);
             throw e;
         }

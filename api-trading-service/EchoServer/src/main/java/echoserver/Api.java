@@ -21,31 +21,32 @@ import jakarta.ws.rs.core.UriInfo;
 
 @Path("/")
 public class Api extends Application {
-	
+
 	@Context
-    private UriInfo uriInfo;
-	
+	private UriInfo uriInfo;
+
 	@Context
 	private HttpHeaders httpHeaders;
-	
+
 	@Context
 	private Request request;
-	
+
 	/**
 	 * This Endpoint echos a GET Reguest in terms of<br>
 	 * * URL<br>
 	 * * Path<br>
 	 * * Method<br>
 	 * * Headers
+	 * 
 	 * @return the above request details, formatted as a json string
 	 */
 	@GET
 	@Path("{s:.*}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response echoGet() {
 		return Controller.echoNoBody(request, httpHeaders, uriInfo);
 	}
-	
+
 	/**
 	 * This Endpoint echos a POST Reguest in terms of<br>
 	 * * URL<br>
@@ -53,24 +54,17 @@ public class Api extends Application {
 	 * * Method<br>
 	 * * Headers<br>
 	 * * Body
+	 * 
 	 * @param body The request body
 	 * @return
 	 */
 	@POST
 	@Path("{s:.*}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response echoPost(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
-	
-	@POST
-	@Path("/theOnlyOne")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces("application/json")
-	public Response theOnlyOne(String body) {
-		return Controller.echoBody(body, request, httpHeaders, uriInfo);
-	}
-	
+
 	/**
 	 * This Endpoint echos a PUT Reguest in terms of<br>
 	 * * URL<br>
@@ -78,16 +72,17 @@ public class Api extends Application {
 	 * * Method<br>
 	 * * Headers<br>
 	 * * Body
+	 * 
 	 * @param body The request body
 	 * @return
 	 */
 	@PUT
 	@Path("{s:.*}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response echoPut(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
-	
+
 	/**
 	 * This Endpoint echos a PATCH Reguest in terms of<br>
 	 * * URL<br>
@@ -95,57 +90,36 @@ public class Api extends Application {
 	 * * Method<br>
 	 * * Headers<br>
 	 * * Body
+	 * 
 	 * @param body The request body
 	 * @return
 	 */
 	@PATCH
 	@Path("{s:.*}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response echoPatch(String body) {
 		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
-	
+
 	/**
-	 * This Endpoint echos a DELETE Reguest with a payload in terms of<br>
+	 * This Endpoint echos a DELETE Reguest with or without a payload in terms of<br>
 	 * * URL<br>
 	 * * Path<br>
 	 * * Method<br>
 	 * * Headers<br>
 	 * * Body
+	 * 
 	 * @param body The request body
-	 * @return
-	 */	
-	@DELETE
-	@Path("{s:.*}")	
-	@Produces("application/json")
-	public Response echoDeleteBody(String body) {	
-		return Controller.echoBody(body, request, httpHeaders, uriInfo);
-	}
-//	@DELETE
-//	@Path("{s:.*}")	
-//	@Produces("application/json")
-//	public Response echoDeleteBody(InputStream bodyStream) {
-//		System.out.println("DELETESBY");
-//		try {
-//			return Controller.echoBody(new String(bodyStream.readAllBytes(), StandardCharsets.UTF_8), request, httpHeaders, uriInfo);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			return Controller.echoBody("", request, httpHeaders, uriInfo);
-//		}
-//	}
-	
-	/**
-	 * This Endpoint echos a DELETE Reguest in terms of<br>
-	 * * URL<br>
-	 * * Path<br>
-	 * * Method<br>
-	 * * Headers<br>
 	 * @return
 	 */
 	@DELETE
 	@Path("{s:.*}")
-	@Produces("application/json")
-	public Response echoDelete() {
-		return Controller.echoNoBody(request, httpHeaders, uriInfo);
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response echoDeleteWithBody(String body) {
+		if (body == null || body.isBlank()) {
+			return Controller.echoNoBody(request, httpHeaders, uriInfo);
+		}
+		return Controller.echoBody(body, request, httpHeaders, uriInfo);
 	}
+
 }
