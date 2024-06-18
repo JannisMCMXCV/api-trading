@@ -1,2 +1,2 @@
 # api-trading
-A lightweight infrastructure for trading against arbitrary exchanges that offer api trading 
+A lightweight library for trading against arbitrary exchanges that offer api trading 
