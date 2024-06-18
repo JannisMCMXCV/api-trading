@@ -22,3 +22,5 @@ api-trading-service/exchange/.settings/org.eclipse.jdt.core.prefs
 api-trading-service/exchange/.settings/org.eclipse.m2e.core.prefs
 api-trading-service/EchoServer/.settings/org.eclipse.jdt.apt.core.prefs
 api-trading-service/exchange/.settings/org.eclipse.jdt.apt.core.prefs
+api-trading-service/utils/.settings/org.eclipse.m2e.core.prefs
+api-trading-service/utils/.settings/org.eclipse.jdt.core.prefs

@@ -7,9 +7,9 @@
 		<artifactId>api-trading-service</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>MapUtils</artifactId>
-	<name>Map Utilities</name>
-	<description>Utility Methods to improve workflow with maps</description>
+	<artifactId>utils</artifactId>
+	<name>Utilities</name>
+	<description>Utility Methods</description>
 
 	<dependencies>
 		<dependency>
