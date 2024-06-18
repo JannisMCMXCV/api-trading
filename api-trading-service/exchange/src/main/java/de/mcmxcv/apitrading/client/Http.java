@@ -1,4 +1,4 @@
-package httpcalls;
+package de.mcmxcv.apitrading.client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import util.MapUtils;
+import de.mcmxcv.util.MapUtils;
 
 public class Http {
 	private static final Logger logger = LoggerFactory.getLogger(Http.class);

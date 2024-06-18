@@ -1,4 +1,4 @@
-package util;
+package de.mcmxcv.util;
 
 import java.util.Map;
 import java.util.Set;

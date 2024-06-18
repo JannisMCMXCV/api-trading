@@ -1,4 +1,4 @@
-package httpcalls;
+package de.mcmxcv.apitrading.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,13 +15,10 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 
+import de.mcmxcv.util.MapUtils;
 import echoserver.Server;
-import util.MapUtils;
 
 public class TestHttp {
 	private Http http = new Http();
