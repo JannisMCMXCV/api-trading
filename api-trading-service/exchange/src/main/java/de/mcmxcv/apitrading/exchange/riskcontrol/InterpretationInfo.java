@@ -1,4 +1,4 @@
-package de.mcmxcv.apitrading.exchange.riskmanagement.interpret;
+package de.mcmxcv.apitrading.exchange.riskcontrol;
 
 public enum InterpretationInfo {
 	CHART_LEVEL,

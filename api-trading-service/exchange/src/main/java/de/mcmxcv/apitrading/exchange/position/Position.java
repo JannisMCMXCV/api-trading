@@ -8,8 +8,6 @@ import de.mcmxcv.apitrading.exchange.riskcontrol.RiskControl;
 
 public interface Position {
 	Instrument getInstrument();
-	Price getEntryPrice();
-	Price getExitPrice();
 	RiskControl getStopLoss();
 	RiskControl getTakeProfit();
 	BigDecimal getProfit();

@@ -2,8 +2,6 @@ package de.mcmxcv.apitrading.exchange.riskcontrol;
 
 import java.math.BigDecimal;
 
-import de.mcmxcv.apitrading.exchange.riskmanagement.interpret.InterpretationInfo;
-
 public class RiskControl {
 	private BigDecimal triggerValue;
 	private InterpretationInfo interpretationInfo;
@@ -38,12 +36,12 @@ public class RiskControl {
 			return this.takeProfit;
 		}
 		
-		Builder triggerValue(BigDecimal trigger) {
+		public Builder triggerValue(BigDecimal trigger) {
 			this.takeProfit.triggerValue = trigger;
 			return this;
 		}
 		
-		Builder as(InterpretationInfo interpretationInformation) {
+		public Builder as(InterpretationInfo interpretationInformation) {
 			this.takeProfit.interpretationInfo = interpretationInformation;
 			return this;
 		}		

@@ -6,9 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
-import de.mcmxcv.apitrading.exchange.riskmanagement.interpret.InterpretationInfo;
-
-public class TestRiskControl {
+public class RiskControlTest {
 	
 	@Test
 	public void riskControl() {

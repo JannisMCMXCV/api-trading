@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import de.mcmxcv.util.MapUtils;
 import echoserver.Server;
 
-public class TestHttp {
+public class HttpTest {
 	private Http http = new Http();
 
 	private final static String baseUrl = "http://localhost:8080";

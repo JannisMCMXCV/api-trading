@@ -7,7 +7,7 @@ import java.util.Currency;
 
 import org.junit.jupiter.api.Test;
 
-public class TestPrice {
+public class PriceTest {
 	@Test
 	public void price() {
 		BigDecimal buy = BigDecimal.ONE;
