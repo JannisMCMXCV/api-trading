@@ -12,6 +12,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public abstract class AbstractPosition implements Position {	
 	private final Instrument instrument;
+	protected final Exchange exchange;
 	
 	private RiskControl stopLoss;
 	private RiskControl takeProfit;
@@ -19,17 +20,19 @@ public abstract class AbstractPosition implements Position {
 	private boolean closed;
 	
 	protected List<Disposable> priceSubscriptions = new ArrayList<>();
+
 	
-	protected AbstractPosition(Instrument instrument) {
+	protected AbstractPosition(Instrument instrument, Exchange exchange) {
 		this.instrument = instrument;
+		this.exchange = exchange;
 		stopLossWatchDog();
 		takeProfitWatchDog();
 	}
 
-	protected AbstractPosition(Instrument instrument, RiskControl stopLoss, RiskControl takeProfit) {
-		this.stopLoss = stopLoss;
-		this.takeProfit = takeProfit;
-		this.instrument = instrument;
+	protected AbstractPosition(Instrument instrument, Exchange exchange, RiskControl stopLoss, RiskControl takeProfit) {
+		this(instrument, exchange);
+		setStopLoss(stopLoss);
+		setTakeProfit(takeProfit);
 	}
 	
 	protected abstract boolean shouldTriggerStopLoss(Price price, RiskControl stopLoss);
@@ -45,7 +48,7 @@ public abstract class AbstractPosition implements Position {
         			return;
         		}
         		if (shouldTriggerStopLoss(price, this.stopLoss)) {
-        			close("Stop Loss triggered");
+        			close(this.stopLoss.getReason());
         		}
         	}));
         });
@@ -58,11 +61,14 @@ public abstract class AbstractPosition implements Position {
         			return;
         		}
         		if (shouldTriggerTakeProfit(price, this.takeProfit)) {
-        			close("Take Profit triggered");
+        			close(this.takeProfit.getReason());
         		}
         	}));
         });
     }
+    
+    
+    
 
 	@Override
 	public void close(String reason) {
@@ -83,10 +89,6 @@ public abstract class AbstractPosition implements Position {
 		priceSubscriptions.clear();
 	}
 
-	private Exchange getExchange() {
-		return this.instrument.details().exchange();
-	}
-
 	@Override
 	public Instrument getInstrument() {
 		return this.instrument;
@@ -94,12 +96,10 @@ public abstract class AbstractPosition implements Position {
 
 	@Override
 	public RiskControl getStopLoss() {
-		return null;
+		return this.stopLoss;
 	}
 	
-	public void setStopLoss(RiskControl stopLoss) {
-		this.stopLoss = stopLoss;
-	}
+	public abstract void setStopLoss(RiskControl stopLoss);
 
 	@Override
 	public RiskControl getTakeProfit() {
@@ -107,9 +107,7 @@ public abstract class AbstractPosition implements Position {
 	}
 	
 	
-	public void setTakeProfit(RiskControl takeProfit) {
-		this.takeProfit = takeProfit;
-	}
+	public abstract void setTakeProfit(RiskControl takeProfit);
 
 	@Override
 	public boolean isClosed() {
