@@ -66,9 +66,6 @@ public abstract class AbstractPosition implements Position {
         	}));
         });
     }
-    
-    
-    
 
 	@Override
 	public void close(String reason) {

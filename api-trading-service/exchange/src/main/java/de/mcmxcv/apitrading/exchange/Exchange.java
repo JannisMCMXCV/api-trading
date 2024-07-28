@@ -2,6 +2,7 @@ package de.mcmxcv.apitrading.exchange;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 
 import de.mcmxcv.apitrading.exchange.instrument.Instrument;
@@ -27,4 +28,5 @@ public interface Exchange {
 	Instant[] getTradingHours(String instrumentId);
 	Position openPosition(String instrumentId, BigDecimal quantity, Direction direction);
 	boolean closePosition(String positionId);
+	Collection<String> getOpenPositions();
 }
