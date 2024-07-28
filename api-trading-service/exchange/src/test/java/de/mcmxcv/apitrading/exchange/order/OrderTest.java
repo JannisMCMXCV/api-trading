@@ -27,8 +27,8 @@ public class OrderTest {
 	public void longMarketOrderBuilder() {
 		BigDecimal quantity = BigDecimal.TEN;
 		BigDecimal stake = BigDecimal.ONE;
-		RiskControl stopLoss = new RiskControl.Builder().triggerValue(new BigDecimal(500).negate()).as(InterpretationInfo.PROFIT).build();
-		RiskControl takeProfit = new RiskControl.Builder().triggerValue(new BigDecimal(5_000)).as(InterpretationInfo.PROFIT).build();
+		RiskControl stopLoss = new RiskControl.Builder().threshold(new BigDecimal(500).negate()).as(InterpretationInfo.PROFIT).build();
+		RiskControl takeProfit = new RiskControl.Builder().threshold(new BigDecimal(5_000)).as(InterpretationInfo.PROFIT).build();
 		
 		Builder orderBuilder = new LongMarketOrder.Builder(new ExchangeFixture().getExchange(), DUMMY_INSTRUMENT.details().id());
 		AbstractOrder order = orderBuilder.quantity(quantity)

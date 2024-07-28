@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 public class RiskControl {
 	private static Logger logger = LoggerFactory.getLogger(RiskControl.class);
-	private BigDecimal triggerValue;
+	private BigDecimal threshold;
 	private String reason;
 	private InterpretationInfo interpretationInfo;
 	
 	
 	private RiskControl () {}
 	
-	public BigDecimal getTriggerValue() {
-		return triggerValue;
+	public BigDecimal getThreashold() {
+		return threshold;
 	}
 	
 	public InterpretationInfo getInterpretationInfo() {
@@ -35,7 +35,7 @@ public class RiskControl {
 		
 		@Override
 		public RiskControl build() {
-			if(this.riskControl.triggerValue == null) {
+			if(this.riskControl.threshold == null) {
 				throw new RuntimeException("Please provide least a trigger value. (Would be interpreted by default as'" + (riskControl.getInterpretationInfo() == null ? InterpretationInfo.useDefault() : riskControl.getInterpretationInfo()) + "'.)");
 			}
 			if(this.riskControl.interpretationInfo == null) {
@@ -49,8 +49,8 @@ public class RiskControl {
 			return this.riskControl;
 		}
 
-		public Builder triggerValue(BigDecimal trigger) {
-			this.riskControl.triggerValue = trigger;
+		public Builder threshold(BigDecimal trigger) {
+			this.riskControl.threshold = trigger;
 			return this;
 		}
 		
