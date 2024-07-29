@@ -48,6 +48,7 @@ public class ExchangeFixture {
 
 	public Exchange getExchange() {
 		Exchange exchange = Mockito.spy(Exchange.class);
+		
 		return exchange;
 	}
 }

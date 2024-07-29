@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
+import de.mcmxcv.apitrading.exchange.account.Account;
 import de.mcmxcv.apitrading.exchange.instrument.Instrument;
 import de.mcmxcv.apitrading.exchange.instrument.Price;
 import de.mcmxcv.apitrading.exchange.position.Position;
@@ -16,6 +17,7 @@ public interface Exchange {
 	boolean isTradable(String instrument);
 	boolean isShortable(String instrument);
 	Price getCurrentPrice(String instrument);
+	Account getAccount();
 	
 	/**
 	 * returns an array with two Instant objects which represent
