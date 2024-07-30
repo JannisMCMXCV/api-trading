@@ -48,6 +48,11 @@ public class ExchangeFixture {
 
 	public Exchange getExchange() {
 		Exchange exchange = Mockito.spy(Exchange.class);
+		knownInstruments.forEach((instrumentId, instrument) -> {
+			Mockito.when(exchange.getInstrument(Mockito.contains(instrumentId))).thenReturn(instrument);
+			Mockito.when(exchange.getCurrentPrice(instrumentId)).thenReturn(instrument.price().blockingFirst());
+		});
+		
 		
 		return exchange;
 	}

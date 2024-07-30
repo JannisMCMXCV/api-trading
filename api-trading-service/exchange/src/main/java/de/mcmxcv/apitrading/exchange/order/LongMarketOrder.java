@@ -47,8 +47,7 @@ public class LongMarketOrder extends AbstractOrder {
 		@Override
 		protected AbstractOrder getOrder(Exchange exchange, String instrumentId) {
 			return new LongMarketOrder(exchange, instrumentId);
-		}
-		
+		}	
 		
 	}
 
