@@ -1,6 +1,7 @@
 package de.mcmxcv.apitrading.client;
 
 import java.io.IOException;
+import java.net.Authenticator;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -22,14 +23,24 @@ import de.mcmxcv.util.MapUtils;
 
 public class Http {
 	private static final Logger logger = LoggerFactory.getLogger(Http.class);
-	private HttpClient client;
+	private final HttpClient client;
 
 	public Http() {
-		client = createClient();
+		this(null);
+	}
+	
+	public Http(Authenticator auth) {
+		client = createClient(auth);
 	}
 
-	private HttpClient createClient() {
-		return HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(30)).build();
+	private HttpClient createClient(Authenticator auth) {
+		HttpClient.Builder clientBuilder = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(30));
+		
+		if (auth != null) {
+			clientBuilder.authenticator(auth);
+		}
+		
+		return clientBuilder.build();
 	}
 
 	public HttpResponse<String> get(String url, Map<String, String> params, Map<String, String> headers)
@@ -48,7 +59,7 @@ public class Http {
 	private Builder postRequestBuilder(String url, Map<String, String> params, Map<String, String> headers,
 			String body) {
 
-		byte[] bodyBytes = body != null ? body.getBytes(StandardCharsets.UTF_8) : "".getBytes(StandardCharsets.UTF_8);
+		byte[] bodyBytes = body != null ? body.getBytes(StandardCharsets.UTF_8) : new String().getBytes(StandardCharsets.UTF_8);
 		completeHeaders(headers, bodyBytes);
 		System.out.println(headers);
 
@@ -69,11 +80,11 @@ public class Http {
 			headers = new HashMap<String, String>();
 		}
 		if (bodyBytes == null) {
-			bodyBytes = "".getBytes();
+			bodyBytes = new String().getBytes();
 		}
-		if (!MapUtils.containsKeyIgnoreCase(headers, contentTypeHeader)) {
-			headers.put(contentTypeHeader, isJsonBody(bodyBytes) ? "application/json" : "text/plain");
-		}
+//		if (!MapUtils.containsKeyIgnoreCase(headers, contentTypeHeader)) {
+//			headers.put(contentTypeHeader, isJsonBody(bodyBytes) ? "application/json" : "text/plain");
+//		}
 	}
 
 	private boolean isJsonBody(byte[] bodyBytes) {
