@@ -37,6 +37,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
+			<version>1.78.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>de.mcmxcv</groupId>
 			<artifactId>EchoServer</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

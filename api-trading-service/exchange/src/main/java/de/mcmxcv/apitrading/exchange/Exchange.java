@@ -6,18 +6,22 @@ import java.util.Collection;
 import java.util.List;
 
 import de.mcmxcv.apitrading.exchange.account.Account;
+import de.mcmxcv.apitrading.exchange.account.AccountSnapshot;
 import de.mcmxcv.apitrading.exchange.instrument.Instrument;
+import de.mcmxcv.apitrading.exchange.instrument.InstrumentSnapshot;
 import de.mcmxcv.apitrading.exchange.instrument.Price;
 import de.mcmxcv.apitrading.exchange.position.Position;
 
 public interface Exchange {
 	Instrument getInstrument(String instrumentId);
-	List<Instrument> getInstruments();
-	List<Instrument> getInstruments(String name);
+	Instrument getInstrumentSnapshot(String instrumentId);
+	List<InstrumentSnapshot> getInstrumentSnapshots();
+	List<InstrumentSnapshot> getInstrumentSnapshots(String name);
 	boolean isTradable(String instrument);
 	boolean isShortable(String instrument);
 	Price getCurrentPrice(String instrument);
 	Account getAccount();
+	AccountSnapshot getAccountSnapshot();
 	
 	/**
 	 * returns an array with two Instant objects which represent

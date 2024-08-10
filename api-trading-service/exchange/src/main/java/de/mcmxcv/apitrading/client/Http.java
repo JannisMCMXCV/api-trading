@@ -1,8 +1,10 @@
 package de.mcmxcv.apitrading.client;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
@@ -13,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,9 +86,9 @@ public class Http {
 		if (bodyBytes == null) {
 			bodyBytes = new String().getBytes();
 		}
-//		if (!MapUtils.containsKeyIgnoreCase(headers, contentTypeHeader)) {
-//			headers.put(contentTypeHeader, isJsonBody(bodyBytes) ? "application/json" : "text/plain");
-//		}
+		if (!MapUtils.containsKeyIgnoreCase(headers, contentTypeHeader)) {
+			headers.put(contentTypeHeader, isJsonBody(bodyBytes) ? "application/json" : "text/plain");
+		}
 	}
 
 	private boolean isJsonBody(byte[] bodyBytes) {
@@ -184,17 +188,20 @@ public class Http {
 	        urlBuilder.append('&');
 	    }
 
-	    params.entrySet().stream()
-	          .map(entry -> entry.getKey() + "=" + entry.getValue() + "&")
-	          .forEach(urlBuilder::append);
-	    removeTrailingSymbol(urlBuilder);
+	    String query = params.entrySet().stream()
+	          .map(entry -> {
+				try {
+					return URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.name()) + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name());
+				} catch (UnsupportedEncodingException e) {
+					throw new RuntimeException(e);
+				}
+			}).collect(Collectors.joining("&"));
+	    
+	    urlBuilder.append(query);
 	    logger.info("Resulting URL: {}", urlBuilder.toString());
 	    return urlBuilder.toString();
 	}
 
-	private void removeTrailingSymbol(StringBuilder urlBuilder) {
-		urlBuilder.deleteCharAt(urlBuilder.length() - 1);
-	}
 
 	private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
 		logger.info("Sending request to: {}", request.uri());

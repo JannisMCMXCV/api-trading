@@ -1,10 +1,11 @@
 package de.mcmxcv.apitrading.impl.binance;
 
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
+
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 
 import de.mcmxcv.apitrading.config.Configuration;
 
@@ -37,18 +38,19 @@ public class Config implements Configuration{
 		return getProperty("apiKey");
 	}
 
-	public byte[] getSecret() {		
-		return !getProperty("secretKey").isBlank()?  getProperty("secretKey").getBytes(StandardCharsets.UTF_8) : getSecretFromFile(); 
+	public byte[] getSecret() {	
+		// TODO: currently only Ed25519 Keys keys are supported!
+		return getSecretFromFile(); 
 	}
 
 	private byte[] getSecretFromFile() {
 		String filePath = getFilePath();
-        try {
-			return Files.readAllBytes(Paths.get(filePath));
+		try (PemReader pemReader = new PemReader(new FileReader(filePath))) {
+            PemObject pemObject = pemReader.readPemObject();
+            return pemObject.getContent();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
 	}
 
 	private String getFilePath() {
