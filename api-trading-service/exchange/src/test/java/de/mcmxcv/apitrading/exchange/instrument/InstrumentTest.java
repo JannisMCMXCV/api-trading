@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import de.mcmxcv.apitrading.currency.HybridCurrency;
 import de.mcmxcv.apitrading.exchange.Exchange;
 import de.mcmxcv.apitrading.fixture.InstrumentFixture;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -27,9 +28,9 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class InstrumentTest {
 	@Test
 	public void instrument() {		
-		Price price1 = new Price(BigDecimal.ONE, BigDecimal.ONE, Currency.getInstance("EUR"));
-		Price price2 = new Price(BigDecimal.TWO, BigDecimal.TWO, Currency.getInstance("EUR"));
-		Price price3 = new Price(BigDecimal.TEN, BigDecimal.TEN, Currency.getInstance("EUR"));
+		Price price1 = new Price(BigDecimal.ONE, BigDecimal.ONE, HybridCurrency.of("EUR"));
+		Price price2 = new Price(BigDecimal.TWO, BigDecimal.TWO, HybridCurrency.of("EUR"));
+		Price price3 = new Price(BigDecimal.TEN, BigDecimal.TEN, HybridCurrency.of("EUR"));
 		List<Price> prices = List.of(price1, price2,price3);
 	
 		String instrumentId = "test";
