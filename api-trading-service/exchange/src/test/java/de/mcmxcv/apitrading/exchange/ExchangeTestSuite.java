@@ -12,8 +12,8 @@ public abstract class ExchangeTestSuite {
 	public abstract Exchange getExchange();
 	
 	@Test
-	public void getAcchount() {
-		Account account = getExchange().getAccount();
-		assertNotEquals(null, account);
+	public void getSymbols() {
+		getExchange().getSymbols();
+		assertNotEmpty
 	}
 }

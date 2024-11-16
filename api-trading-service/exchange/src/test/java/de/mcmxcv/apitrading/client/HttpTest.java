@@ -21,7 +21,7 @@ import de.mcmxcv.util.MapUtils;
 import echoserver.Server;
 
 public class HttpTest {
-	private Http http = new Http();
+	private RestClient http = new RestClient();
 
 	private final static String baseUrl = "http://localhost:8080";
 	private final static String testPath = "/test";
