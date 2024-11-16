@@ -13,6 +13,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,15 +26,15 @@ import com.google.gson.JsonSyntaxException;
 
 import de.mcmxcv.util.MapUtils;
 
-public class Http {
-	private static final Logger logger = LoggerFactory.getLogger(Http.class);
+public class RestClient {
+	private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
 	private final HttpClient client;
 
-	public Http() {
+	public RestClient() {
 		this(null);
 	}
 	
-	public Http(Authenticator auth) {
+	public RestClient(Authenticator auth) {
 		client = createClient(auth);
 	}
 
@@ -45,6 +46,23 @@ public class Http {
 		}
 		
 		return clientBuilder.build();
+	}
+	
+	public static String pathJoiner(String... pathElements) {
+		return Arrays.stream(pathElements).collect(Collectors.joining("/"));
+	}
+
+	public static String mapToParams(Map<String, String> map) {
+		return map.entrySet()
+				.stream()
+				.map(entry -> {
+					try {
+						return URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.name()) + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name());
+					} catch (UnsupportedEncodingException e) {
+						throw new RuntimeException(e);
+					}
+				})
+				.collect(Collectors.joining("&"));
 	}
 
 	public HttpResponse<String> get(String url, Map<String, String> params, Map<String, String> headers)
@@ -188,20 +206,12 @@ public class Http {
 	        urlBuilder.append('&');
 	    }
 
-	    String query = params.entrySet().stream()
-	          .map(entry -> {
-				try {
-					return URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.name()) + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name());
-				} catch (UnsupportedEncodingException e) {
-					throw new RuntimeException(e);
-				}
-			}).collect(Collectors.joining("&"));
+	    String query = mapToParams(params);
 	    
 	    urlBuilder.append(query);
 	    logger.info("Resulting URL: {}", urlBuilder.toString());
 	    return urlBuilder.toString();
 	}
-
 
 	private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
 		logger.info("Sending request to: {}", request.uri());

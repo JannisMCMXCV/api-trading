@@ -10,7 +10,7 @@ import org.bouncycastle.util.io.pem.PemReader;
 import de.mcmxcv.apitrading.config.Configuration;
 
 public class Config implements Configuration{
-	private final static String DEFAULT_PATH = "binance.properties";
+	private final static String DEFAULT_PATH = "binance/binance.properties";
 	
 	public Config() {
 		try {
@@ -44,7 +44,7 @@ public class Config implements Configuration{
 	}
 
 	private byte[] getSecretFromFile() {
-		String filePath = getFilePath();
+		String filePath = getSecretPath();
 		try (PemReader pemReader = new PemReader(new FileReader(filePath))) {
             PemObject pemObject = pemReader.readPemObject();
             return pemObject.getContent();
@@ -53,7 +53,7 @@ public class Config implements Configuration{
 		}
 	}
 
-	private String getFilePath() {
+	public String getSecretPath() {
 		String filePath = getProperty("secretKeyPath");
 		if (filePath.startsWith("~")) {
 			return MessageFormat.format("{0}{1}", System.getProperty("user.home"), filePath.substring(1));
