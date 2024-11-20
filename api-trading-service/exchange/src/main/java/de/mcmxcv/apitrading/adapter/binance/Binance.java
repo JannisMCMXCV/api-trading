@@ -32,14 +32,14 @@ import com.binance.connector.client.impl.SpotClientImpl;
 import com.binance.connector.client.utils.ParameterChecker;
 import com.binance.connector.client.utils.signaturegenerator.Ed25519SignatureGenerator;
 
+import de.mcmxcv.apitrading.adapter.binance.parser.json.BinanceInstrument;
 import de.mcmxcv.apitrading.client.RestClient;
 import de.mcmxcv.apitrading.exchange.Exchange;
 import de.mcmxcv.apitrading.exchange.account.Account;
 import de.mcmxcv.apitrading.exchange.account.AccountSnapshot;
 import de.mcmxcv.apitrading.exchange.instrument.Instrument;
-import de.mcmxcv.apitrading.exchange.instrument.InstrumentDetails;
 import de.mcmxcv.apitrading.exchange.instrument.Price;
-import de.mcmxcv.util.Utils;
+import io.reactivex.rxjava3.core.Observable;
 
 @SuppressWarnings("unused")
 public class Binance implements Exchange {
@@ -50,11 +50,6 @@ public class Binance implements Exchange {
 
 	private final static Config config = new Config();
 
-	public static void main(String... authClient) throws IOException, InterruptedException {
-		Binance binance = new Binance();
-		binance.getInstrument("BNBUSDT");
-	}
-
 	public Binance() {
 		try {
 			binanceClient = new SpotClientImpl(config.getApiKey(),
@@ -62,6 +57,7 @@ public class Binance implements Exchange {
 		} catch (IOException e) {
 			throw new RuntimeException("could not read from Secret Key.", e);
 		}
+		
 		binanceClient.setShowLimitUsage(true);
 	}
 
@@ -69,10 +65,15 @@ public class Binance implements Exchange {
 	public Instrument getInstrument(String symbol) {
 		
 		 Map<String, Object> parameters = new LinkedHashMap<>();
-	        parameters.put("symbol", "BNBUSDT");
+	        parameters.put("symbol", symbol);
 
-	    String response = Utils.tryFixCorruptedJson(Utils.tryFixCorruptedJson(binanceClient.createMarket().exchangeInfo(parameters)) );
-		System.out.println(response);
+	    BinanceInstrument binanceInstrument = new BinanceInstrument(binanceClient.createMarket().exchangeInfo(parameters), this);
+		return binanceInstrument.parseInstrument();
+	}
+	
+	@Override
+	public Observable<Price> subscribeInstrument(String symbol) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
