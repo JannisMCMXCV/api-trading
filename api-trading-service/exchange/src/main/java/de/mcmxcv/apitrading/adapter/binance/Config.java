@@ -1,4 +1,4 @@
-package de.mcmxcv.apitrading.impl.binance;
+package de.mcmxcv.apitrading.adapter.binance;
 
 import java.io.FileReader;
 import java.io.IOException;
