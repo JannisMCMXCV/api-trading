@@ -3,16 +3,16 @@ package de.mcmxcv.apitrading.adapter.binance;
 import de.mcmxcv.apitrading.exchange.Exchange;
 import de.mcmxcv.apitrading.exchange.ExchangeTestSuite;
 
-public class TestBinance extends ExchangeTestSuite{
+public class TestBinanceSpot extends ExchangeTestSuite{
 
 	@Override
 	public Exchange getExchange() {
-		return new Binance();
+		return new BinanceSpot();
 	}
 
 	@Override
 	public String getSymbol() {
-		return "BNBUSDT";
+		return "BTCFDUSD";
 	}
 
 }

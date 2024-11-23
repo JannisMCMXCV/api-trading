@@ -14,10 +14,14 @@ public record Instrument(
 		boolean tradable,
 		BigDecimal margin,
 		BigDecimal minQuantity,
-		BigDecimal maxQuantity,
-		Map<Instant, Price> currentPrice){
+		BigDecimal maxQuantity) {
+
+	public Price getPrice() {
+		return this.exchange.getInstrumentPrice(this.symbol);
+	}
 	
-	public Observable<Price> subscribe() {
+	public Observable<Price> subscribePrice() {
 		return this.exchange.subscribeInstrument(this.symbol);
 	}
+	
 }

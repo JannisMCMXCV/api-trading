@@ -12,13 +12,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.mcmxcv.apitrading.adapter.binance.Binance;
+import de.mcmxcv.apitrading.adapter.binance.BinanceSpot;
 import de.mcmxcv.apitrading.currency.HybridCurrency;
 import de.mcmxcv.apitrading.exchange.Exchange;
 import de.mcmxcv.apitrading.exchange.instrument.Instrument;
 import de.mcmxcv.apitrading.exchange.instrument.Price;
 
-public record BinanceInstrument(String json, Binance binance) implements BinanceResponse{
+public record BinanceSpotInstrument(String json, BinanceSpot binance) implements BinanceResponse {
 	public Instrument parseInstrument() {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -31,9 +31,8 @@ public record BinanceInstrument(String json, Binance binance) implements Binance
 			BigDecimal margin = getMargin(data);
 			BigDecimal minQuantity = getMinQuantity(data);
 			BigDecimal maxQuantity = getMaxQuantity(data);
-			Map<Instant, Price> currentPrice = getCurrentPrice(data);
 			
-			return new Instrument(binance, symbol, name, tradable, margin, minQuantity,maxQuantity, currentPrice);
+			return new Instrument(binance, symbol, name, tradable, margin, minQuantity,maxQuantity);
 			
 		} catch (JsonMappingException e) {
 			e.printStackTrace(); // TODO: better error handling
@@ -82,25 +81,8 @@ public record BinanceInstrument(String json, Binance binance) implements Binance
 		return new BigDecimal(max.asText());
 	}
 
-	private Map<Instant, Price> getCurrentPrice(JsonNode data) {
-		Instant timestamp = getTimeStamp(data);
-
-//		TODO: richtigen Preis ermitteln!
-		Price price = new Price(BigDecimal.ZERO, BigDecimal.ZERO, HybridCurrency.of(getSymbol(data)));
-		Map<Instant, Price> priceMap = new HashMap<>();
-		priceMap.put(timestamp, price);
-		return priceMap;
-	}
-
-	private Instant getTimeStamp(JsonNode data) {
-		JsonNode serverTimeNode = data.findValue("serverTime");
-		long serverTime = serverTimeNode.asLong();
-		return Instant.ofEpochMilli(serverTime);
-	}
-
 	@Override
 	public int parseUsedWeight() {
-		
 		return 0;
 	}
 

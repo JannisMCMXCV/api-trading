@@ -32,7 +32,8 @@ import com.binance.connector.client.impl.SpotClientImpl;
 import com.binance.connector.client.utils.ParameterChecker;
 import com.binance.connector.client.utils.signaturegenerator.Ed25519SignatureGenerator;
 
-import de.mcmxcv.apitrading.adapter.binance.parser.json.BinanceInstrument;
+import de.mcmxcv.apitrading.adapter.binance.parser.json.BinanceSpotInstrument;
+import de.mcmxcv.apitrading.adapter.binance.parser.json.BinanceSpotPrice;
 import de.mcmxcv.apitrading.client.RestClient;
 import de.mcmxcv.apitrading.exchange.Exchange;
 import de.mcmxcv.apitrading.exchange.account.Account;
@@ -42,15 +43,15 @@ import de.mcmxcv.apitrading.exchange.instrument.Price;
 import io.reactivex.rxjava3.core.Observable;
 
 @SuppressWarnings("unused")
-public class Binance implements Exchange {
-	private static final Logger logger = LoggerFactory.getLogger(Binance.class);
+public class BinanceSpot implements Exchange {
+	private static final Logger logger = LoggerFactory.getLogger(BinanceSpot.class);
 
 
 	private final SpotClientImpl binanceClient;
 
 	private final static Config config = new Config();
 
-	public Binance() {
+	public BinanceSpot() {
 		try {
 			binanceClient = new SpotClientImpl(config.getApiKey(),
 					new Ed25519SignatureGenerator(config.getSecretPath()), config.getBaseUrl());
@@ -64,16 +65,20 @@ public class Binance implements Exchange {
 	@Override
 	public Instrument getInstrument(String symbol) {
 		
-		 Map<String, Object> parameters = new LinkedHashMap<>();
-	        parameters.put("symbol", symbol);
+		Map<String, Object> parameters = getSymbolMap(symbol);
 
-	    BinanceInstrument binanceInstrument = new BinanceInstrument(binanceClient.createMarket().exchangeInfo(parameters), this);
-		return binanceInstrument.parseInstrument();
+	    BinanceSpotInstrument binanceInstrument = new BinanceSpotInstrument(binanceClient.createMarket().exchangeInfo(parameters), this);
+	    return binanceInstrument.parseInstrument();
+	}
+
+	private Map<String, Object> getSymbolMap(String symbol) {
+		Map<String, Object> parameters = new LinkedHashMap<>();
+	    parameters.put("symbol", symbol);
+		return parameters;
 	}
 	
 	@Override
 	public Observable<Price> subscribeInstrument(String symbol) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -87,6 +92,14 @@ public class Binance implements Exchange {
 	public String[] getSymbols(String contains) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Price getInstrumentPrice(String symbol) {
+		Map<String, Object> parameters = getSymbolMap(symbol);
+		
+		BinanceSpotPrice price = new BinanceSpotPrice(binanceClient.createMarket().tickerSymbol(parameters));
+		return price.parsePrice();
 	}
 
 

@@ -8,6 +8,7 @@ public interface Exchange {
 	String[] getSymbols();
 	String[] getSymbols(String contains);
 	Instrument getInstrument(String symbol);
+	Price getInstrumentPrice(String symbol);
 	Observable<Price> subscribeInstrument(String symbol);
 	
 	
